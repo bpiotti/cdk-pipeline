@@ -12,7 +12,7 @@ export class ServiceStack extends Stack {
         new Function(this, 'ServiceLambda', {
             runtime: Runtime.NODEJS_14_X,
             handler: 'entrypoint.handler',
-            code: Code.fromAsset(path.resolve(__dirname, '../lambda'))
+            code: Code.fromAsset(path.resolve(__dirname, '..', 'lambda'))
         })
     }
 }
