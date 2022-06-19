@@ -1,25 +1,22 @@
-export enum StageDomain {
-    ALPHA,
-    BETA,
-    PROD
+import { Environment } from "aws-cdk-lib";
+
+export class Domain {
+    static readonly BETA = new Domain('beta');
+    static readonly GAMMA = new Domain('gamma');
+    static readonly PROD = new Domain('prod');
+
+    readonly name : string;
+    
+    private constructor(name: string) {
+        this.name = name
+    }
 }
 
-export interface DeploymentEnvrionment {
-    domain: StageDomain
-    account: string
-    region: string
+export interface DeploymentStage extends Environment {
+    domain: Domain
 }
 
-interface PipelineConfigration {
-    pipelineStage: DeploymentEnvrionment // The Deployment Environment which contains the actual pipeline stack
-    stages: DeploymentEnvrionment[] // List of environments to deploy the service stack
-}
-
-const stages : DeploymentEnvrionment[] = [
-    {domain: StageDomain.ALPHA, account: process.env.DEV_ACCOUNT_ID!, region: 'us-east-2'}
+// Define list of pipeline stages here
+export const STAGES : DeploymentStage[] = [
+    {domain: Domain.BETA, account: process.env.DEV_ACCOUNT_ID!, region: 'us-east-2'}
 ]
-
-export const PIPELINE_CONFIGURATION : PipelineConfigration = {
-    pipelineStage: stages[0],
-    stages: stages
-} 

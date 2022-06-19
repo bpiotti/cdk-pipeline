@@ -1,7 +1,7 @@
 import { Stack, StackProps, Stage } from 'aws-cdk-lib';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
-import { DeploymentEnvrionment, PIPELINE_CONFIGURATION } from '../../configuration/pipeline-config';
+import { STAGES } from '../../configuration/pipeline-config';
 import { ServiceStage } from '../service/service-stage';
 
 export class CdkPipelineStack extends Stack {
@@ -22,9 +22,8 @@ export class CdkPipelineStack extends Stack {
     });
 
     // Add Stages to pipeline
-    const stages : DeploymentEnvrionment[] = PIPELINE_CONFIGURATION.stages;
-    stages.forEach(stage => {
-      pipeline.addStage(new ServiceStage(this, 'ServiceStage', stage, {
+    STAGES.forEach(stage => {
+      pipeline.addStage(new ServiceStage(this, 'PipelineStage', stage, {
         env: {account: stage.account, region: stage.region}
       }))
     });
